@@ -3,7 +3,7 @@ Powershell scripts to analylze cross-domain password reuse with NTLM hashes
 
 These powershell script can be used to analzye the NTLM hashes of different domains and determine whether or not the password has been used in the same domain, or in the other domains being analyzed.
 
-This script assumes you have already obtained a dump of the .ntds files of each respective domain using a tool crackmapexec. It also assumes you have safely extracted the .ntds files from the machine used to compromise each respective domain and moved it onto a Windows host. 
+These scripts assume you have already obtained a dump of the .ntds files of each respective domain using a tool crackmapexec. It also assumes you have safely extracted the .ntds files from the machine used to compromise each respective domain and moved it onto a Windows host. 
 
 # Crackmapexec command:
 
@@ -25,7 +25,7 @@ This is a file that contains a re-formulated version of the script.
 
 ## Output example:
 
-# domain.txt:
+### domain.txt:
 
 Users with the same password:
   
@@ -33,7 +33,7 @@ Users with the same password:
 
 Hash: fef3894a0a732255041a32c833fbd12c
 
-# userlist.txt:
+### userlist.txt:
 
 domain1\user1
 domain2\user3
@@ -44,7 +44,7 @@ domain3\user4
 
 ...where users are grouped based on matching hashes
 
-# enabledusers_date_.csv
+### enabledusers_date_.csv
 
 Columns:
   Name
