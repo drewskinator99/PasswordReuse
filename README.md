@@ -36,10 +36,14 @@ Hash: fef3894a0a732255041a32c833fbd12c
 ### userlist.txt:
 
 domain1\user1
+
 domain2\user3
+
 domain1\user2
 
+
 domain2\user6
+
 domain3\user4
 
 ...where users are grouped based on matching hashes
@@ -47,9 +51,13 @@ domain3\user4
 ### enabledusers_date_.csv
 
 Columns:
+  
   Name
+  
   Enabled
+  
   LastLogon
+  
   PasswordLastSet
 
 
