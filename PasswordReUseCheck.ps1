@@ -1,19 +1,14 @@
-﻿ # Class to store user and ntlm hash data
+ # Class to store user and ntlm hash data
  class user {
     [string] $ntlmh
-    [string]$user
-    
+    [string]$user    
     user(
         [string] $ntlmh,
     [string]$user
     ){
         $this.ntlmh = $ntlmh
         $this.user = $user
-        
-
     }
-
-
 }
 # Define the output file paths
 $basepath = "C:\BasePathHere"
@@ -38,18 +33,14 @@ $index = 0
 foreach ($domain in $domains) {
     # Set the output file path for the current domain
     $outputFilePath = $Userfilepaths[$index]
-    
     # Get all users in the current domain
     $users = Get-ADUser -Server $domain -Filter * -Property SamAccountName
-    
     # Create or overwrite the output file
     New-Item -Path $outputFilePath -ItemType File -Force
-    
     # Loop through each user and write the SamAccountName to the output file
     foreach ($user in $users) {
         $user.SamAccountName | Out-File -FilePath $outputFilePath -Append
-    }
-    
+    }   
     Write-Host "Usernames for $domain have been written to $outputFilePath"
     $index++
 }
@@ -71,8 +62,7 @@ foreach($n in $ntds){
       continue
     }   
     $userobj = [user]::new($ntlm,$user) 
-    $userarr += $userobj
-     
+    $userarr += $userobj    
 }
 
 # Domain 1 - Check for self password re-use
@@ -80,7 +70,6 @@ $sorted = $userarr | sort -Property ntlmh
 $Domain2roups = $sorted | Group-Object -Property ntlmh
 $duplicatesFile = Join-Path -Path $basepath -ChildPath "Domain1SelfDuplicates.txt"
 foreach($Domain2roup in $Domain2roups){
-
     if($Domain2roup.Count -ne 1){
         foreach($Domain2 in $Domain2roup.Group){
             $found = Get-ADuser $Domain2.user  -Properties Enabled, Name, samaccountname
@@ -93,7 +82,6 @@ foreach($Domain2roup in $Domain2roups){
          }
     }
 }
-
 # Use the above as the standard for finding duplicates among the same domain. 
 
 # Domain 2 - Create Instance of User Class to perform tests against
@@ -111,7 +99,6 @@ foreach($n in $Domain2ntds){
       Write-Output "Error processing user credentials for user: $user" >> $LogFilePathHere
       continue
     }
-
     $Domain2userobj = [user]::new($ntlm,$user) 
     $Domain2userarr += $Domain2userobj
 }
@@ -121,7 +108,6 @@ $sorted = $Domain2userarr | sort -Property ntlmh
 $Domain2roups = $sorted | Group-Object -Property ntlmh
 $duplicatesFile = Join-Path -Path $basepath -ChildPath "Domain2SelfDuplicates.txt"
 foreach($Domain2roup in $Domain2roups){
-
     if($Domain2roup.Count -ne 1){
         foreach($Domain2 in $Domain2roup.Group){
             $found = Get-ADuser $Domain2.user  -Properties Enabled, Name, samaccountname
@@ -149,12 +135,9 @@ foreach($n in $Domain3ntds){
       Write-Output "Error processing user credentials for user: $user" >> $LogFilePathHere
       continue
     }
-
     $Domain3userobj = [user]::new($ntlm,$user) 
     $Domain3userarr += $Domain3userobj
 }
-
-
 $Domain2VSDomain1File = Join-path -Path $basepath -ChildPath "CrossDomainReuse-Domain2.txt"
 
 # Domain 2 - Check for Password Re-use against Domain 1
@@ -178,7 +161,6 @@ $Domain3VSDomain1File = Join-path -Path $basepath -ChildPath "CrossDomainReuse-D
 
 # Domain 3 - Check for Password Re-use against Domain 1
 Foreach($Domain1user in $userarr){
-
     foreach($Domain3user in $Domain3userarr){
         if($Domain3user.ntlmh -eq $Domain1user.ntlmh){
             $Domain3 = $Domain3user.user
@@ -192,5 +174,3 @@ Foreach($Domain1user in $userarr){
         }        
     }
 }
-
-
